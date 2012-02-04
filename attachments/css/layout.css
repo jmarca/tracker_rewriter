@@ -1,0 +1,7 @@
+div.unit img {
+    width: 100%;
+}
+div.unit {
+    min-height:10px;
+    min-width:500px;
+}
