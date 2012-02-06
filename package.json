@@ -10,8 +10,8 @@
     "node": ">0.6.0"
   },
     "dependencies": {
-    "underscore": "",
-    "filed": "",
+//    "underscore": "",
+//    "filed": "",
     "request": ""
     },
   "devDependencies": {}
