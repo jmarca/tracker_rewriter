@@ -2,17 +2,16 @@
   "author": "James E. Marca <jmarca@translab.its.uci.edu>",
   "name": "tracker_rewriter",
   "description": "expose tracker db using rewriter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "url": ""
   },
   "engines": {
     "node": ">0.6.0"
   },
-    "dependencies": {
+  "dependencies": {
     "request": ""
-    },
-    "devDependencies": {},
-    "main": "lib/rewrite.js"
-
+  },
+  "devDependencies": {},
+  "main": "lib/rewrite.js"
 }
