@@ -10,9 +10,9 @@
     "node": ">0.6.0"
   },
     "dependencies": {
-//    "underscore": "",
-//    "filed": "",
     "request": ""
     },
-  "devDependencies": {}
+    "devDependencies": {},
+    "main": "lib/rewrite.js"
+
 }
