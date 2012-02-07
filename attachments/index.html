@@ -6,8 +6,14 @@
   <title>test</title>
   <link rel='shortcut icon' href='images/favicon.ico' type='image/x-icon' />
   <script type='text/javascript' src='js/jquery.js'></script>
+
+  <script language="javascript" type="text/javascript" src="/d3/d3.js"> </script>
+  <script language="javascript" type="text/javascript" src="/d3/d3.layout.js"> </script>
+  <script language="javascript" type="text/javascript" src="/d3/d3.time.js"> </script>
+
   <script type='text/javascript' src='js/handlebars.js'></script>
   <script type='text/javascript' src='js/underscore.js'></script>
+  <script type='text/javascript' src='js/util.js'></script>
   <script type='text/javascript' src='js/dataview.js'></script>
   <link rel="stylesheet" type="text/css" media="all"  href="/css/oocss/all.css" />
   <link rel="stylesheet" type="text/css" media="all"  href="css/layout.css" />
@@ -15,6 +21,8 @@
 
 <body>
   <div class="page liquid">
+    <div class='loading'>
+    </div>
     <div class="head">
       <div id="ctmlbanner">
         <div id="menu">
@@ -43,12 +51,12 @@
           <input  type="radio" id="radiovds" name="dataset" value='vds'  checked='checked' /><label for="radiovds">Pick VDS detectors</label>
           <div class='detectors vds'>
             <h2><a href='#'>VDS detectors</a></h2>
-            <div>
+            <div class='listing'>
             </div>
           </div>
           <div class='detectors wim'>
             <h2><a href='#'>WIM detectors</a></h2>
-            <div>
+            <div class='listing'>
             </div>
           </div>
         </div>

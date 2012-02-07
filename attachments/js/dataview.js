@@ -90,30 +90,34 @@ var templates = { wim : Handlebars.compile(wim)
 
 jQuery('document').ready(function(){
 
-
     jQuery('.detectors div').hide();
     jQuery('.detectors h2 a').click(function(e){
         e.preventDefault();
         jQuery(this)
             .parents('.detectors')
-            .find('div')
-            .slideToggle();
+            .find('div.listing')
+            .toggle();
     });
+
+    util.getMore();
 
     //    http://lysithia.its.uci.edu:5984/vdsdata%2Ftracking/_all_docs?limit=10&startkey=%2212%22&endkey=%2212zzz%22
 
 
 });
 
-jQuery('#blob').ready(function(){
-
-    var site = 'wim.10.S';
-
-    jQuery.getJSON('/db/wim/'+site
+function getWIM(site){
+        jQuery.getJSON('/db/wim/'+site
                    , function(data) {
                        var bit = templates.wim({'years':years
                                                 ,'site':data});
                        jQuery('#blob').html(bit);
                    });
+};
+jQuery('#blob').ready(function(){
+
+
+    var site = 'wim.10.S';
+    getWIM(site);
 })
 
