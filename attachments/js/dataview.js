@@ -1,92 +1,13 @@
-var years = [];
-for (var y =2007; y<2010; y++){ years.push(y); }
 
-var wim =
-    "{{#inspectwim years}}{{.}}"
-    + "{{/inspectwim}}";
-
-var wim_imputations =  "<ul>"
-                     + "<li>self imputation: {{imputed}}</li>"
-                     + "<li> {{max_iterations}} imputations out of {{{chain_lengths.length}}} stopped at max iterations</li>"
-                     + "</ul>"
-
-var preimglist = '<div class="unit size1of2"><h3>Pre-imputation plots</h3>{{#images}}<img src="{{.}}" alt="{{.}}" title="raw data plot, pre imputation" />{{/images}}</div>';
-var postimglist = '<div class="unit size1of2 lastUnit"><h3>Post-imputation plots</h3>{{#images}}<img src="{{.}}" alt="{{.}}" title="imputed median plots, post imputation" />{{/images}}</div>';
-
-var year_re = /_(\d\d\d\d)_/;
+var yr_re = /\d{4}/;
+var year_re = /_(\d{4})_/;
 var imputed_re = /imputed_trucks/;
 var agg_re = /_agg.redo_/;
-
-
-
-Handlebars.registerHelper('inspectwim'
-                         , function(items,options) {
-                               // items is years, full context is options.fn(this)
-                               var data = options.fn(this).site;
-                               var imgs = _.chain(data._attachments)
-                                           .keys()
-                                           .filter(function(att){
-                                               return year_re.test(att);
-                                           })
-                                           .value();
-                               var pre = _.chain(imgs)
-                                          .filter(function(img){
-                                              return agg_re.test(img);
-                                          })
-                                          .map(function(img){
-                                              return '/db/wim/'+data._id+'/'+img;
-                                          })
-                                           .sort()
-                                          .value();
-                               var post = _.chain(imgs)
-                                           .filter(function(img){
-                                               return imputed_re.test(img);
-                                           })
-                                           .map(function(img){
-                                               return '/db/wim/'+data._id+'/'+img;
-                                           })
-                                           .sort()
-                                           .value();
-
-                               var out = ''
-                               for(var i=0, l=items.length; i<l; i++) {
-                                   var year = items[i];
-                                   var this_year = function(att){
-                                       var m = year_re.exec(att);
-                                       if(m) return m[1] == year;
-                                       return false;
-                                   }
-                                   out += '<div class="line"><h2>' + options.fn(items[i])+'</h2>';
-                                   out += templates.wim_imputations(data[year])
-                                   // the pre imputation plots are slightly out of order
-
-                                   var prelist = _.filter(pre,this_year);
-                                   if(prelist){
-                                       out += templates.preimagelist({'images':[prelist[1]
-                                                                               ,prelist[0]
-                                                                               ,prelist[2]
-                                                                               ,prelist[3]]});
-                                   }
-                                   out += templates.postimagelist({'images':_.filter(post,this_year)});
-                                   out += "</div>";
-  }
-
-                               return out;
-
-                          });
-
-Handlebars.registerHelper('beforeimages', function(context, fn) {
-
-                              //return templates.preimagelist({'images':pre.sort()});
-                          });
-
-
-var templates = { wim : Handlebars.compile(wim)
-                ,wim_imputations: Handlebars.compile(wim_imputations)
-                ,preimagelist: Handlebars.compile(preimglist)
-                ,postimagelist: Handlebars.compile(postimglist)
-                };
-
+var img_sort = /_(\d{3}).png/;
+var agg_sort_map = {'001':2
+                   ,'002':1
+                   ,'003':3
+                   ,'004':4};
 
 jQuery('document').ready(function(){
 
@@ -101,23 +22,160 @@ jQuery('document').ready(function(){
 
     util.getMore();
 
-    //    http://lysithia.its.uci.edu:5984/vdsdata%2Ftracking/_all_docs?limit=10&startkey=%2212%22&endkey=%2212zzz%22
-
-
 });
 
 function getWIM(site){
-        jQuery.getJSON('/db/wim/'+site
-                   , function(data) {
-                       var bit = templates.wim({'years':years
-                                                ,'site':data});
-                       jQuery('#blob').html(bit);
+    jQuery.getJSON('/db/wim/'+site
+                  , function(data) {
+                        var years = _.chain(data)
+                                    .keys()
+                                    .filter(function(k){
+                                        return yr_re.test(k);
+                                    })
+                                    .sort()
+                                    .value();
+                        var blob = d3.select('#blob')
+                        var titles = blob.selectAll('h2.id').data([data._id]);
+                        titles.enter().append('h2').classed('id',true);
+                        titles.text(data._id);
+                        titles.exit().remove();
+                        blob
+                        .selectAll('div.year').remove();
+
+                        var rows = blob
+                                   .selectAll('div.year')
+                                   .data(years);
+                        rows
+                        .enter()
+                        .append('div')
+                        .classed('line year',true)
+                        .append('h2')
+                        .text(function(d){return d;})
+                        ;
+                        rows.exit().remove();
+                        // reselect to make sure I have the current set
+                        rows = blob
+                               .selectAll('div.year');
+
+                        // now add the data
+                        // first everybody gets imputation summary
+                        var imputereport = rows.selectAll('ul')
+                                           .data(function(d){return [d];});
+                        imputereport.enter()
+                        .append('ul');
+                        imputereport.append('li')
+                        .text(function(d){
+                            var text = 'self imputation: '+data[d].imputed;
+                            return text;
+                        });
+                        imputereport.append('li')
+                        .text(function(d){
+                            var text = ''
+                            if(data[d].chain_lengths !== undefined)
+                                text = data[d].max_iterations +' imputations out of '+ data[d].chain_lengths.length +' stopped at max iterations ';
+                            return text;
+                        });
+
+                        // now two "columns".  left batch is pre
+                        // imputation plots, right batch is post
+                        // imputation plots
+                        // need to inspect the attachment filenames to determine each
+                        var yi = yearly_images(data);
+                        rows.selectAll('div.unit').data(function(d){return [d];})
+                        .enter()
+                        .append('div')
+                        .classed('unit size1of2',true)
+                        .append('h3')
+                        .text('Pre-imputation plots')
+                        var preunits = rows.selectAll('div.unit');
+                        preunits.selectAll('img')
+                        .data(function(d){
+                            if(yi.pre[d] !== undefined)
+                                return yi.pre[d];
+                            return []
+                        })
+                        .enter()
+                        .append('img')
+                        .attr('src',function(d){
+                            return d;
+                        })
+                        .attr('alt',function(d){
+                            return d;
+                        })
+                        .attr('title','raw data plot, pre imputation');
+
+                        // now post imputation plots
+                        rows.selectAll('div.unit.lastUnit').data(function(d){return [d];})
+                        .enter()
+                        .append('div')
+                        .classed('unit size1of2 lastUnit',true)
+                        .append('h3')
+                        .text('Post-imputation plots')
+                        var postunits = rows.selectAll('div.unit.lastUnit');
+                        postunits.selectAll('img')
+                        .data(function(d){
+                            if(yi.post[d] !== undefined)
+                                return yi.post[d];
+                            return []
+                        })
+                        .enter()
+                        .append('img')
+                        .attr('src',function(d){
+                            return d;
+                        })
+                        .attr('alt',function(d){
+                            return d;
+                        })
+                        .attr('title','raw data plot, post imputation');
+
                    });
 };
-jQuery('#blob').ready(function(){
 
+jQuery('#blob').ready(function(){
 
     var site = 'wim.10.S';
     getWIM(site);
 })
 
+function yearly_images(data){
+
+    var imgs = _.chain(data._attachments)
+               .keys()
+               .filter(function(att){
+                   return year_re.test(att);
+               })
+               .map(function(img){
+                   return '/db/wim/'+data._id+'/'+img;
+               })
+               .value();
+    // first pree
+    var preimgs = _.chain(imgs)
+                  .filter(function(img){
+                      return agg_re.test(img);
+                  })
+                  .sortBy(function(v){
+                      var m = img_sort.exec(v)
+                      return agg_sort_map[m[1]];
+                  })
+                  .groupBy(function(v){
+                      var m = year_re.exec(v);
+                      return m[1];
+                  })
+                  .value();
+
+    // now post
+    var postimgs = _.chain(imgs)
+                   .filter(function(img){
+                       return imputed_re.test(img);
+                   })
+                  .sortBy(function(v){
+                      var m = img_sort.exec(v)
+                      return m[1];
+                  })
+                   .groupBy(function(v){
+                       var m = year_re.exec(v);
+                       return m[1];
+                   })
+                   .value()
+    return {pre:preimgs,post:postimgs};
+}
