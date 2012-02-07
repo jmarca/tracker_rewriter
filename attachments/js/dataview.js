@@ -88,6 +88,23 @@ var templates = { wim : Handlebars.compile(wim)
                 };
 
 
+jQuery('document').ready(function(){
+
+
+    jQuery('.detectors div').hide();
+    jQuery('.detectors h2 a').click(function(e){
+        e.preventDefault();
+        jQuery(this)
+            .parents('.detectors')
+            .find('div')
+            .slideToggle();
+    });
+
+    //    http://lysithia.its.uci.edu:5984/vdsdata%2Ftracking/_all_docs?limit=10&startkey=%2212%22&endkey=%2212zzz%22
+
+
+});
+
 jQuery('#blob').ready(function(){
 
     var site = 'wim.10.S';
