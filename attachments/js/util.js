@@ -1,5 +1,30 @@
 var util =
     function() {
+
+        // from jquery.couch.js
+        // Convert a options object to an url query string.
+        // ex: {key:'value',key2:'value2'} becomes '?key="value"&key2="value2"'
+        function encodeOptions(options) {
+            var buf = [];
+            if (typeof(options) === "object" && options !== null) {
+                for (var name in options) {
+                    if ($.inArray(name,
+                                  ["error", "success", "beforeSuccess", "ajaxStart"]) >= 0)
+                        continue;
+                    var value = options[name];
+                    if ($.inArray(name, ["key", "startkey", "endkey"]) >= 0) {
+                        value = toJSON(value);
+                    }
+                    buf.push(encodeURIComponent(name) + "=" + encodeURIComponent(value));
+                }
+            }
+            return buf.length ? "?" + buf.join("&") : "";
+        }
+        function toJSON(obj) {
+            return obj !== null ? JSON.stringify(obj) : null;
+        }
+
+
         function showLoader() {
             $( '.loading' ).toggle();
         }
@@ -60,7 +85,7 @@ var util =
 
                     var query = {limit:settings.lookahead
                                 ,startkey:oldlast
-                                ,endkey:'1300000'
+                                ,endkey:'9900000'
                                 };
 
                     var lasthandler = function(err,newlast,next){
@@ -77,6 +102,7 @@ var util =
                         lasthandler =  function(err,newlast,next){
                             if(!err)
                                 wimoldlast = newlast;
+                            if(next) next()
                         }
                         elemclass = '.wim';
                     }
@@ -105,8 +131,8 @@ var util =
                         }(elemclass,lasthandler);
                     function fetch(){
                         query.startkey = option == 'wim' ? wimoldlast : oldlast;
-                        jQuery.ajax({'url': url
-                                    ,'data': query
+                        jQuery.ajax({'url': url// + encodeOptions(query)
+                                    ,'data':query
                                     ,'dataType': 'json'
                                     ,'success': success
                                     ,'cache': true
