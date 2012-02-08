@@ -20,10 +20,18 @@ jQuery('document').ready(function(){
         .toggle();
 
     });
-    util.getMore('wim');
     util.getMore('vds');
+    util.getMore('wim');
 
 });
+
+var clickhandler = {'wim':getWIM
+                   ,'vds':getVDS
+                   };
+
+function getVDS(site){
+
+}
 
 function getWIM(site){
     jQuery.getJSON('/db/wim/'+site
