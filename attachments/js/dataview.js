@@ -15,12 +15,13 @@ jQuery('document').ready(function(){
     jQuery('.detectors h2 a').click(function(e){
         e.preventDefault();
         jQuery(this)
-            .parents('.detectors')
-            .find('div.listing')
-            .toggle();
-    });
+        .parents('.detectors')
+        .find('div.listing')
+        .toggle();
 
-    util.getMore();
+    });
+    util.getMore('wim');
+    util.getMore('vds');
 
 });
 
@@ -135,6 +136,7 @@ jQuery('#blob').ready(function(){
 
     var site = 'wim.10.S';
     getWIM(site);
+
 })
 
 function yearly_images(data){

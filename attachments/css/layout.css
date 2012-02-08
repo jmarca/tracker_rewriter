@@ -9,10 +9,3 @@ div.listing{
     max-height:400px;
     overflow-y: scroll;
 }
-body div.leftCol{
-    position: fixed;
-    width:120px
-}
-body div.main {
-margin-left:120px;
-}
