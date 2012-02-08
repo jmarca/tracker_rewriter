@@ -5,3 +5,7 @@ div.unit {
     min-height:10px;
     min-width:500px;
 }
+div.listing{
+    max-height:400px;
+    overflow-y: scroll;
+}
