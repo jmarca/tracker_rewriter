@@ -30,6 +30,78 @@ var clickhandler = {'wim':getWIM
                    };
 
 function getVDS(site){
+    jQuery.getJSON('/db/vds/'+site
+                  , function(data){
+                        var years = _.chain(data)
+                                    .keys()
+                                    .filter(function(k){
+                                        return yr_re.test(k);
+                                    })
+                                    .sort()
+                                    .value();
+                        var blob = d3.select('#blob')
+                        var titles = blob.selectAll('h2.id').data([data._id]);
+                        titles.enter().append('h2').classed('id',true);
+                        titles.text(data._id);
+                        titles.exit().remove();
+                        blob
+                        .selectAll('div.year').remove();
+
+                        var rows = blob
+                                   .selectAll('div.year')
+                                   .data(years);
+                        rows
+                        .enter()
+                        .append('div')
+                        .classed('line year',true)
+                        .append('h2')
+                        .text(function(d){return d;})
+                        ;
+                        rows.exit().remove();
+                        // reselect to make sure I have the current set
+                        rows = blob
+                               .selectAll('div.year');
+
+                        // now add the data
+
+                        // for the CARB users, imputation is important
+                        // first self-imputation, then truck imputation
+                        // then "neighboring WIM sites" information, with
+                        // links to vds and wim sites.
+
+                        // I have some grand ideas to make hashtags
+                        // work and therefore make the browser back
+                        // history owrk, but that is out of scope.
+                        // Ship it first, then add functionality and
+                        // niceties such as those.
+
+
+                        var imputereport = rows.selectAll('ul')
+                                           .data(function(d){return [d];});
+                        imputereport.enter()
+                        .append('ul');
+
+                        // first, self imputation results, if they exist.
+                        imputereport.selectAll('li.selfimpute')
+                        .data(function(d){
+                            if(data[d].vdsraw_chain_lengths)
+                                return [{vdsraw_chain_lengths : data[d].vdsraw_chain_lengths
+                                        ,vdsraw_max_iterations : data[d].vdsraw_max_iterations}]
+                            return [{}];
+                        })
+                        .enter()
+                        .append('li')
+                        .classed('selfimpute',true)
+                        .text(function(d){
+                            var t = 'self imputation completed ';
+                            if(d.vdsraw_max_iterations === undefined){
+                                t = 'no data stored on self imputation yet'
+                            }else{
+                                t += d.vdsraw_max_iterations +' out of '+ d.vdsraw_chain_lengths.length +' imputations stopped at max iterations';
+                            }
+                            return t;
+                        });
+                    });
 
 }
 
@@ -111,6 +183,7 @@ function getWIM(site){
                         .attr('alt',function(d){
                             return d;
                         })
+                        .on("click", enlargeimage)
                         .attr('title','raw data plot, pre imputation');
 
                         // now post imputation plots
@@ -135,10 +208,57 @@ function getWIM(site){
                         .attr('alt',function(d){
                             return d;
                         })
-                        .attr('title','raw data plot, post imputation');
+                        .attr('title','raw data plot, post imputation')
+                        .on("click", enlargeimage)
+                        ;
 
                    });
 };
+
+
+function enlargeimage(d) {
+    var modalsvg = d3.select('body').selectAll('svg#infobox').data([d])
+                   .enter()
+                   .append('svg:svg')
+                   .attr('id','infobox')
+    ;
+
+    modalsvg = d3.select('svg#infobox')
+            .classed('hidden',false)
+
+
+    modalsvg.selectAll('image').remove();
+    modalsvg.style('opacity',0)
+    .transition()
+    .duration(750)
+    .style('opacity',100);
+
+    modalsvg.append("svg:image")
+    .attr("xlink:href", d)
+    .attr("width", '100%')
+    .attr("height", '100%')
+    .on('click',function(d){
+        d3.select(this.parentNode).transition()
+        .duration(500)
+        .style('opacity',0)
+        .remove();
+        ;
+    });
+
+    // <image x="200" y="200" width="100px" height="100px"
+    //      xlink:href="myimage.png">
+    // <title>My image</title>
+    //     </image>
+
+
+  // d3.select(this).transition()
+  //     .duration(750)
+  //     .attr("transform", "translate(480,480)scale(23)rotate(180)")
+  //   .transition()
+  //     .delay(1500)
+  //     .attr("transform", "translate(240,240)scale(0)")
+  //     .style("fill-opacity", 0)
+}
 
 jQuery('#blob').ready(function(){
 

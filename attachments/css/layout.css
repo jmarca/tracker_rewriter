@@ -9,3 +9,19 @@ div.listing{
     max-height:400px;
     overflow-y: scroll;
 }
+
+#infobox {
+  position: fixed;
+  left: 50px;
+  top: 0px;
+  width: 1000px;
+  height: 800px;
+  border: 1px solid #222;
+  background: #ddd;
+  z-index: 1000;
+  box-shadow: 0 1px 8px 0 black;
+}
+
+.hidden {
+    display: none;
+}
