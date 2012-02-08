@@ -45,7 +45,7 @@ var util =
         var adddocs =
             function(){
                 var alldocs = {};
-                return function(option,container,docs){
+                return function(option,container,docs,cb){
                     if(alldocs[option] === undefined) {
                         alldocs[option] = [];
                     }
@@ -60,7 +60,7 @@ var util =
                     .append('a')
                     .attr('href','#')
                     .on('click',function(d){
-                        getWIM(d.id);
+                        cb(d.id);
                         return false;
                     })
                     .text(function(d){ return d.id; });
@@ -121,7 +121,7 @@ var util =
                                     }
 
                                     var container = d3.select('.detectors'+wrapper+' div.listing');
-                                    adddocs(option,container,rows);
+                                    adddocs(option,container,rows,clickhandler[option]);
 
                                     cb(null,last.id,next)
                                 }else{
