@@ -1,3 +1,6 @@
 [submodule "attachments/css/oocss"]
 	path = attachments/css/oocss
 	url = https://github.com/stubbornella/oocss.git
+[submodule "vendor/uikit"]
+	path = vendor/uikit
+	url = https://github.com/visionmedia/uikit.git
