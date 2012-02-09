@@ -130,6 +130,7 @@ function getVDS(site){
                         // imputation plots, right batch is post
                         // imputation plots
                         // need to inspect the attachment filenames to determine each
+                        if(data._attachments === undefined) return;
 
                         var yi = vds_yearly_images(data);
                         rows.selectAll('div.unit').data(function(d){return [d];})
@@ -245,6 +246,7 @@ function getWIM(site){
                         // imputation plots, right batch is post
                         // imputation plots
                         // need to inspect the attachment filenames to determine each
+                        if(data._attachments === undefined) return;
                         var yi = wim_yearly_images(data);
                         rows.selectAll('div.unit').data(function(d){return [d];})
                         .enter()
@@ -299,35 +301,20 @@ function getWIM(site){
                    });
 };
 
-
 function enlargeimage(d) {
-    var modalsvg = d3.select('body').selectAll('svg#infobox').data([d])
-                   .enter()
-                   .append('svg:svg')
-                   .attr('id','infobox')
+
+    var taller = jQuery(window).height()*0.95;
+
+    var d = ui.dialog(''
+             , jQuery('<img src='+d+' alt="image blowup" />')
+             )
+      .closable()
+      .overlay()
+      .effect('scale')
+      .show()
     ;
+    d.el.css({ height: taller + 'px' });
 
-    modalsvg = d3.select('svg#infobox')
-            .classed('hidden',false)
-
-
-    modalsvg.selectAll('image').remove();
-    modalsvg.style('opacity',0)
-    .transition()
-    .duration(750)
-    .style('opacity',100);
-
-    modalsvg.append("svg:image")
-    .attr("xlink:href", d)
-    .attr("width", '100%')
-    .attr("height", '100%')
-    .on('click',function(d){
-        d3.select(this.parentNode).transition()
-        .duration(500)
-        .style('opacity',0)
-        .remove();
-        ;
-    });
 }
 
 jQuery('#blob').ready(function(){
@@ -338,7 +325,6 @@ jQuery('#blob').ready(function(){
 })
 
 function wim_yearly_images(data){
-
     var imgs = _.chain(data._attachments)
                .keys()
                .filter(function(att){

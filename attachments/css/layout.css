@@ -25,3 +25,14 @@ div.listing{
 .hidden {
     display: none;
 }
+
+
+#dialog {
+  top: 10px;
+  max-width: 1200px;
+  min-width: 900px;
+  border: 1px solid #eee;
+  background: #fff;
+  z-index: 1000;
+  overflow: scroll;
+}
