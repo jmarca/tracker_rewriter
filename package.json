@@ -2,7 +2,7 @@
   "author": "James E. Marca <jmarca@translab.its.uci.edu>",
   "name": "tracker_rewriter",
   "description": "expose tracker db using rewriter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "url": ""
   },
