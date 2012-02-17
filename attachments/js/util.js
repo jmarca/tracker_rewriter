@@ -39,7 +39,7 @@ var util =
             return showing;
         }
 
-        var oldlast = '.';
+        var oldlast = 0;
         var wimoldlast = 'wim.0';
 
         var adddocs =
@@ -71,21 +71,26 @@ var util =
 
         function getMoreDocs(settings){
             var defaults = {couch:''
-                           ,lookahead:100
+                           ,lookahead:1000
+                           ,vdsservice:'/db/vdsdetectors'
+                           ,wimservice:'/db/wimdetectors'
                            };
             if(settings){
                 settings = _.extend(defaults,settings);
             }else{
                 settings = defaults;
             }
-            var url = settings.couch + '/db/detectors';
+            var detector_service = settings.vdsservice;
+            var vdsurl = settings.couch + detector_service;
+            detector_service = settings.wimservice;
+            var wimurl = settings.couch + detector_service;
 
             var getsome =
                 function(option){
-
+                    var url = vdsurl;
                     var query = {limit:settings.lookahead
                                 ,startkey:oldlast
-                                ,endkey:'9900000'
+                                ,endkey:99999999
                                 };
 
                     var lasthandler = function(err,newlast,next){
@@ -97,6 +102,7 @@ var util =
                     var elemclass = '.vds';
 
                     if (option === 'wim') {
+                        url = wimurl;
                         query.startkey=wimoldlast;
                         query.endkey='wim.Z';
                         lasthandler =  function(err,newlast,next){
