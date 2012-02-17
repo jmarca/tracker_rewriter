@@ -39,7 +39,7 @@ var util =
             return showing;
         }
 
-        var oldlast = '.';
+        var oldlast = 0;
         var wimoldlast = 'wim.0';
 
         var adddocs =
@@ -71,7 +71,7 @@ var util =
 
         function getMoreDocs(settings){
             var defaults = {couch:''
-                           ,lookahead:100
+                           ,lookahead:1000
                            ,vdsservice:'/db/vdsdetectors'
                            ,wimservice:'/db/wimdetectors'
                            };
@@ -90,7 +90,7 @@ var util =
                     var url = vdsurl;
                     var query = {limit:settings.lookahead
                                 ,startkey:oldlast
-                                ,endkey:'9900000'
+                                ,endkey:99999999
                                 };
 
                     var lasthandler = function(err,newlast,next){
