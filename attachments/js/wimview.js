@@ -57,7 +57,31 @@ var getWIM
                     var data = params.data;
                     var rows = params.rows;
 
-                    // first everybody gets imputation summary
+                    // first everybody gets properties dump
+                    //
+                    //
+                    var props = rows.selectAll('ul')
+                                .data(function(d){return [d];});
+                    props.enter()
+                    .append('ul');
+                    props.append('li')
+                    .text(function(d){
+                        var text = 'Location: '+data[d].properties['2009-02-25'].loc;
+                        return text;
+                    });
+                    props.append('li')
+                    .text(function(d){
+                        var text = 'Type: '+data[d].properties['2009-02-25'].wim_type;
+                        return text;
+                    });
+                    props.append('li')
+                    .text(function(d){
+                        var text = 'Freeway: '+data[d].properties['2009-02-25'].freeway;
+                        return text;
+                    });
+
+
+                    // second everybody gets imputation summary
                     var imputereport = rows.selectAll('ul')
                                        .data(function(d){return [d];});
                     imputereport.enter()
