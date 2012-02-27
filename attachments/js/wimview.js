@@ -53,33 +53,37 @@ var getWIM
                 return {pre:preimgs,post:postimgs};
             }
 
+            var  displayProperties = function(elem,data){
+                     // everybody gets properties dump
+                     //
+                     //
+                     // assign data to element
+                     elem.selectAll('div.props').remove();
+                     var props = elem
+                                 .append('div');
+                     props
+                     .classed('props',1);
+                     props.append('ul')
+                     .selectAll('li')
+                     .data(function(d){return ['loc','wim_type','freeway','lanes'];})
+                     .enter()
+                     .append('li')
+                     .text(function(d){
+                         var keyval = {'loc':'Location: '
+                                      ,'wim_type':'WIM station type: '
+                                      ,'freeway':'Freeway: '
+                                      ,'lanes': 'lanes: '
+                                      };
+
+                         var text = keyval[d]+data.properties['2009-02-25'][d];
+                         return text;
+                     });
+
+                 };
+
             var displayData = function(params){
                     var data = params.data;
                     var rows = params.rows;
-
-                    // first everybody gets properties dump
-                    //
-                    //
-                    var props = rows.selectAll('ul')
-                                .data(function(d){return [d];});
-                    props.enter()
-                    .append('ul');
-                    props.append('li')
-                    .text(function(d){
-                        var text = 'Location: '+data[d].properties['2009-02-25'].loc;
-                        return text;
-                    });
-                    props.append('li')
-                    .text(function(d){
-                        var text = 'Type: '+data[d].properties['2009-02-25'].wim_type;
-                        return text;
-                    });
-                    props.append('li')
-                    .text(function(d){
-                        var text = 'Freeway: '+data[d].properties['2009-02-25'].freeway;
-                        return text;
-                    });
-
 
                     // second everybody gets imputation summary
                     var imputereport = rows.selectAll('ul')
@@ -161,7 +165,8 @@ var getWIM
             var div = '#blob';
             return detector_view({url:url
                                  ,div:div
-                                 ,cb:displayData
+                                 ,year_cb:displayData
+                                 ,props_cb:displayProperties
                                  });
         }();
 

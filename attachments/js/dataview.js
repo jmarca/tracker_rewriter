@@ -26,7 +26,7 @@ function enlargeimage(d) {
 
     var taller = jQuery(window).height()*0.95;
 
-    var d = ui.dialog(''
+    var _d = ui.dialog(''
              , jQuery('<img src='+d+' alt="image blowup" />')
              )
       .closable()
@@ -34,7 +34,7 @@ function enlargeimage(d) {
       .effect('scale')
       .show()
     ;
-    d.el.css({ height: taller + 'px' });
+    _d.el.css({ height: taller + 'px' });
 
 }
 
