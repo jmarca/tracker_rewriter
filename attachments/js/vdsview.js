@@ -50,6 +50,47 @@ function vds_yearly_images(data){
 }
 
 
+            var  displayProperties = function(elem,data){
+                     // everybody gets properties dump
+                     //
+                     //
+                     // assign data to element
+                     elem.selectAll('div.props').remove();
+                     var yr_re = /\d{4}/;
+                     var last_year = _.chain(data)
+                                     .keys()
+                                     .filter(function(k){
+                                         return yr_re.test(k);
+                                     })
+                                     .sort()
+                                     .last()
+                                     .value();
+                     var last_prop = _.last(data[last_year].properties)
+                     var props = elem
+                                 .append('div');
+                     props
+                     .classed('props',1);
+                     props.append('ul')
+                     .selectAll('li')
+                     .data(function(d){return ['name','vdstype','freeway','direction','abs_pm','lanes'];})
+                     .enter()
+                     .append('li')
+                     .text(function(d){
+                         var keyval = {'name':'Site name: '
+                                      ,'vdstype':'Detector type: '
+                                      ,'freeway':'Freeway: '
+                                      ,'lanes': 'lanes: '
+                                      ,'direction':'direction: '
+                                      ,'abs_pm':'absolute postmile: '
+                                      };
+
+                         var text = keyval[d]+last_prop[d];
+                         return text;
+                     });
+
+                 };
+
+
         var displayData = function(params) {
             var data = params.data;
             var rows = params.rows;
@@ -178,7 +219,8 @@ function vds_yearly_images(data){
         var div = '#blob';
         return detector_view({url:url
                              ,div:div
-                             ,cb:displayData
+                             ,year_cb:displayData
+                             ,props_cb:displayProperties
                              });
     }( );
 
