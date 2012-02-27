@@ -9,11 +9,13 @@
 //
 
 var detector_view
-      = function(){
+      = function(options){
+
         var yr_re = /\d{4}/;
         var year_re = /_(\d{4})_/;
         var divid;
         var displayData;
+        var displayProps;
         var u;
         function target_div (d){
             if(d !== undefined) divid = d;
@@ -22,6 +24,10 @@ var detector_view
         function display_cb( cb ){
             if( cb !== undefined ) displayData = cb;
             return displayData;
+        }
+        function properties_cb( cb ){
+            if( cb !== undefined ) displayProps = cb;
+            return displayProps;
         }
         function url(_u){
             if(_u !== undefined)  u = _u;
@@ -36,6 +42,7 @@ var detector_view
                                  ,processData
                                  );
         };
+
         function processYears(data){
             var years = _.chain(data)
                         .keys()
@@ -51,6 +58,9 @@ var detector_view
             titles.exit().remove();
             blob
             .selectAll('div.year').remove();
+            blob.selectAll('div.props').remove();
+
+            displayProps(blob,data);
 
             var rows = blob
                        .selectAll('div.year')
@@ -68,22 +78,23 @@ var detector_view
                    .selectAll('div.year');
             return rows;
         }
-            function processData(data){
-                var rows = processYears(data);
-                return displayData({data:data,rows:rows});
-            }
-            var detector_view = {url : url
-                                ,target_div : target_div
-                                ,display_cb : display_cb
-                                ,get : get
-                                };
-            function initialize( options ){
-                if( options.url !== undefined ) url(options.url);
-                if( options.div !== undefined ) target_div(options.div);
-                if( options.cb  !== undefined ) display_cb(options.cb);
-                return detector_view;
-            }
+        function processData(data){
+            var rows = processYears(data);
+            return displayData({data:data,rows:rows});
+        }
+        var detector_view = {url : url
+                            ,target_div : target_div
+                            ,display_cb : display_cb
+                            ,get : get
+                            };
+        function initialize( options ){
+            if( options.url !== undefined ) url(options.url);
+            if( options.div !== undefined ) target_div(options.div);
+            if( options.year_cb  !== undefined ) display_cb(options.year_cb);
+            if( options.props_cb  !== undefined ) properties_cb(options.props_cb);
+            return detector_view;
+        }
+        return initialize(options);
 
-            return initialize;
-        }();
+    }
 
