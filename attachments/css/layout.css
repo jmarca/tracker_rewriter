@@ -37,3 +37,36 @@ div.listing{
   z-index: 1000;
   overflow: scroll;
 }
+
+div#map {
+    height: 300px;
+    width: 400px;
+    border: 1px solid #efefef;
+    padding: 0px;
+    background: #ffffff;
+    position: absolute;
+    top:50px;
+    right: 0px;
+    background: transparent;
+}
+
+svg image {
+   opacity: 0.4;
+}
+
+#map > circle {
+  fill: #000;
+  fill-opacity: .15;
+  stroke: #E5E0D9;
+  shape-rendering: auto;
+  vector-effect: non-scaling-stroke;
+}
+
+circle.wim{
+    fill: #8833ee;
+}
+
+circle.vds{
+    fill: #eedd44;
+}
+
