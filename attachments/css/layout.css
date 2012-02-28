@@ -41,9 +41,8 @@ div.listing{
 div#map {
     height: 300px;
     width: 400px;
-    border: 1px solid #efefef;
+    border: 2px solid #cfdfdf;
     padding: 0px;
-    background: #ffffff;
     position: absolute;
     top:50px;
     right: 0px;
