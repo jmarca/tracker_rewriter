@@ -60,13 +60,16 @@ jQuery(document).ready(function(){
 
 })
 
-function click_handler_creator(did){
+function click_handler_creator(did,data){
     var detector  = did;
     var handler = getWIM.get;
     if(/vds/.test(did)){
         detector = did.split('_')[1]
         handler = getVDS.get;
+    }else{
+        detector = ['wim',did.split('_')[1],data.properties.direction].join('.');
     }
+
     return function(){
         d3.event.stopPropagation();
         handler(detector);
@@ -98,7 +101,7 @@ function detectors_load(e) {
             }
 
             if(click_links[detector_id] === undefined){
-                click_links[detector_id] = click_handler_creator(detector_id);
+                click_links[detector_id] = click_handler_creator(detector_id,feature.data);
             }
             dot.on('click',click_links[detector_id])
         }
