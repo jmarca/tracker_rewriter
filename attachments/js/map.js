@@ -83,6 +83,8 @@ function detectors_load(e) {
     var keep=[];
     for (var i = 0,l=e.features.length; i < l; i++) {
         var feature = e.features[i];
+        // keep all WIM sites (more than three chars in type)
+        // get rid of all but mainline VDS sites
         if( ! [/\w{3}/,/ML/].some(function(r){return  r.test(feature.data.properties.type) })){
             g.removeChild(feature.element);
         }else{
