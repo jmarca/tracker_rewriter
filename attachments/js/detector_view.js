@@ -33,13 +33,22 @@ var detector_view
             if(_u !== undefined)  u = _u;
             return u;
         }
-        function get(site){
+        function get(site,handlers){
             if(u === undefined || displayData === undefined){
                 return null;
                 // could also throw here, but why?
             }
             return jQuery.getJSON(u + site
-                                 ,processData
+                                 ,function(data){
+                                      if(handlers){
+                                          async.parallel( _.map(_.flatten([handlers,processData])
+                                                               ,function(f){
+                                                                    return async.apply(f,data);
+                                                                }) )
+                                      }else{
+                                          processData(data);
+                                      }
+                                  }
                                  );
         };
 

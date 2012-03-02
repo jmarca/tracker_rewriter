@@ -1,6 +1,24 @@
 var util =
     function() {
 
+
+        function movemap(data){
+            // extract map coordinate and recenter map
+            var coords = data.properties ? data.properties[_.keys(data.properties)[0]].geojson.coordinates : null;
+            if(!coords){
+                // look elsewhere
+                var keylist = _.keys(data);
+                var hasprops = _.find(keylist
+                                  ,function(k){
+                                       return data[k].properties !== undefined;
+                                   })
+                coords = data[hasprops].properties[_.keys(data[hasprops].properties)[0]].geojson.coordinates
+            }
+            map.center({'lon':coords[0],'lat':coords[1]});
+            var z = map.zoom();
+            if(z < 12) map.zoom(z+1)
+        }
+
         // from jquery.couch.js
         // Convert a options object to an url query string.
         // ex: {key:'value',key2:'value2'} becomes '?key="value"&key2="value2"'
@@ -60,7 +78,7 @@ var util =
                     .append('a')
                     .attr('href','#')
                     .on('click',function(d){
-                        cb(d.id);
+                        cb(d.id,movemap);
                         return false;
                     })
                     .text(function(d){ return d.id; });
