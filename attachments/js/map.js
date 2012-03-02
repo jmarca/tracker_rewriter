@@ -83,7 +83,7 @@ function detectors_load(e) {
     var keep=[];
     for (var i = 0,l=e.features.length; i < l; i++) {
         var feature = e.features[i];
-        if(['Data','ML'].indexOf(feature.data.properties.type) == -1){
+        if( ! [/Data/,/ML/].some(function(r){return  r.test(feature.data.properties.type) })){
             g.removeChild(feature.element);
         }else{
             keep.push(feature);
