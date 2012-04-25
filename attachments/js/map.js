@@ -38,8 +38,8 @@ jQuery(document).ready(function(){
 
     var mmap = d3.select("#map")
 
-    var _width = mmap.attr('width')
-    var _height = mmap.attr('height')
+    var _width = 400
+    var _height = 300
     var svg = mmap
               .append("svg:svg")
               .attr("width", _width)
