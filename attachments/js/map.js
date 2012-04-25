@@ -7,19 +7,12 @@ ui_layers.detectors = po.geoJson()
     .clip(false)
     .visible(true)
     .on("load", detectors_load)
+    .on("show", detectors_show)
     .on("load", po.stylist()
                 .attr("stroke", function(d) {
                     return 'green';
                 })
        );
-
-// ui_layers.murbs = po.geoJson()
-//     .url("/detectors/murb/2009/{Z}/{X}/{Y}.json")
-//     .id("murb")
-//     .clip(false)
-//     .visible(true)
-//     .on("load", murb_load)
-// ;
 
 var jsonp_fetch = function(url,cb){
     jQuery.ajax({
@@ -77,6 +70,9 @@ function click_handler_creator(did,data){
 }
 
 var click_links = {};
+
+// can I wedge CrossFilter in here?
+
 function detectors_load(e) {
     var tile = e.tile, g = tile.element;
     //while (g.lastChild) g.removeChild(g.lastChild);
@@ -88,6 +84,7 @@ function detectors_load(e) {
         if( ! [/\w{3}/,/ML/].some(function(r){return  r.test(feature.data.properties.type) })){
             g.removeChild(feature.element);
         }else{
+
             keep.push(feature);
             //g.appendChild(e.feature.element);
             var detector_id = feature.data.properties.detector_id;
@@ -111,4 +108,51 @@ function detectors_load(e) {
     e.features = keep;
     return null;
 };
+
+
+/** map_move
+*
+* this function keeps things consistent even when the map moves or is
+* zoomed.  See, as the tiled areas come in and out of the map viewer,
+* they go in and out of cache, etc.  So I need to make sure things are
+* styled as they should be now, not as they were when the flipped off
+* of the screen
+*
+* It is kind of a lot of overhead, and there is probably a more
+* elegant way to do it, but for a modern broswer that can handle the
+* data plotting part of this website, the unsetting and then resetting
+* of all styles happens without any visible hiccup.
+*
+*/
+
+var map_move =
+    function(){
+
+        var areaname = 'county' // default to something
+
+        var mapmove = function(e){
+                if(!areaname) return;
+
+                d3.selectAll('circle[class$="wim|vds"]').each(function(idx,elem){
+            var cc = d3.select(elem).attr('class');
+            cc = cc.replace(' active','');
+            d3.select(elem).attr('class',cc);
+        });
+        var checkers = jQuery('input:checkbox[name=datadown]');
+        var checked = checkers.filter(':checked');
+        checked.each(function(idx,elem){
+            var idname = area_types[areaname].idfield;
+            var elemid = elem.__data__[idname];
+            if(handlers[areaname][elemid]){
+                handlers[areaname][elemid]
+                    .setMapActive();
+            }
+        });
+
+    };
+    mapmove.area = function(a){
+        areaname = a;
+    }
+    return mapmove;
+}();
 
