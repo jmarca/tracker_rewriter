@@ -36,8 +36,14 @@ var map;
 jQuery(document).ready(function(){
     // -117.7659%2C33.6875%2C-117.61176%2C33.69161
 
-    var svg = d3.selectAll("#map")
-        .append("svg:svg")
+    var mmap = d3.select("#map")
+
+    var _width = mmap.attr('width')
+    var _height = mmap.attr('height')
+    var svg = mmap
+              .append("svg:svg")
+              .attr("width", _width)
+              .attr("height", _height)
     ;
 
 
