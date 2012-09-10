@@ -1,8 +1,8 @@
 {
   "author": "James E. Marca <jmarca@translab.its.uci.edu>",
   "name": "tracker_rewriter",
-  "description": "expose tracker db using rewriter",
-  "version": "0.0.5",
+  "description": "expose tracker couchdb using a rewriter",
+  "version": "0.0.6",
   "repository": {
     "url": ""
   },
@@ -13,7 +13,15 @@
     "request": "",
     "underscore": ""
   },
-  "devDependencies": {},
-  "main": "lib/rewrite.js",
-  "optionalDependencies": {}
+    "devDependencies": {
+        "should":"",
+        "express":"",
+        "superagent":"",
+        "async":""
+
+    },
+    "scripts": {
+        "test": "mocha"
+    },
+   "main": "lib/rewrite.js"
 }
