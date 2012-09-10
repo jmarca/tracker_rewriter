@@ -44,27 +44,28 @@ describe('/db detectors',function(){
                            //,limit:5
                            };
 
-               request({'url':'http://'+ testhost +':'+testport+'/db/wimdetectors?'
-                             +qs.stringify(query)
-                       ,'headers':{'accept':'application/json'}
-                       ,'followRedirect':true}
-                      ,function(e,r,b){
-                           if(e) return done(e)
-                           r.statusCode.should.equal(200)
-                           should.exist(b)
-                           var c = JSON.parse(b)
-                           c.should.have.property('rows')
-                           c.rows.should.have.length(220)
-                           _.each(c.rows
-                                 ,function(row){
-                                      row.should.have.property('id')
-                                      row.should.have.property('key')
-                                      row.should.have.property('value')
-                                      row.value.should.have.property('rev')
-                                      row.id.should.match(/^wim\.\d+/)
-                                  })
-                           return done()
-                       })
+               superagent
+               .get('http://'+ testhost +':'+testport+'/db/wimdetectors')
+               .query(query)
+               .set('accept','application/json')
+               .set('followRedirect',true)
+               .end(function(err,res){
+                   if(err) return done(err)
+                   res.ok.should.be.true
+                   should.exist(res.body)
+                   var c = res.body
+                   c.should.have.property('rows')
+                   c.rows.should.have.length(220)
+                   _.each(c.rows
+                         ,function(row){
+                              row.should.have.property('id')
+                              row.should.have.property('key')
+                              row.should.have.property('value')
+                              row.value.should.have.property('rev')
+                              row.id.should.match(/^wim\.\d+/)
+                          })
+                       return done()
+               })
            })
     })
     describe('/db/vdsdetectors',function(){
@@ -72,31 +73,31 @@ describe('/db detectors',function(){
           ,function(done){
                var query = {startkey:'0'
                            ,endkey:99999999
-                           //,limit:5
+                            //,limit:5
                            };
 
-               request({'url':'http://'+ testhost +':'+testport+'/db/vdsdetectors?'
-                             +qs.stringify(query)
-                       ,'headers':{'accept':'application/json'}
-                       ,'followRedirect':true}
-                      ,function(e,r,b){
-                           if(e) return done(e)
-                           r.statusCode.should.equal(200)
-                           should.exist(b)
-                           var c = JSON.parse(b)
-                           c.should.have.property('rows')
-                           c.rows.should.have.length(7236)
-                           //console.log(c.rows.length)
-                           _.each(c.rows
-                                 ,function(row){
-                                      row.should.have.property('id')
-                                      row.id.should.match(/^\d{6,7}/)
-                                      row.should.have.property('key')
-                                      row.should.have.property('value',null)
+               superagent('http://'+ testhost +':'+testport+'/db/vdsdetectors')
+               .query(query)
+               .set('accept','application/json')
+               .set('followRedirect',true)
+               .end(function(err,res){
+                   if(err) return done(err)
+                   res.ok.should.be.true
+                   should.exist(res.body)
+                   var c = res.body
+                   c.should.have.property('rows')
+                   c.rows.should.have.length(7236)
+                   //console.log(c.rows.length)
+                   _.each(c.rows
+                         ,function(row){
+                              row.should.have.property('id')
+                              row.id.should.match(/^\d{6,7}/)
+                              row.should.have.property('key')
+                              row.should.have.property('value',null)
 
-                                  })
-                           return done()
-                       })
+                          })
+                       return done()
+               })
            })
     })
     describe('/db/highwaydetectors',function(){
