@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "request": "",
-    "underscore": ""
+      "lodash": "",
+      "geom_utils":"git://github.com/jmarca/geom_utils.git"
   },
     "devDependencies": {
         "should":"",
