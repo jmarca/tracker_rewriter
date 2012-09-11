@@ -2,7 +2,7 @@
   "author": "James E. Marca <jmarca@translab.its.uci.edu>",
   "name": "tracker_rewriter",
   "description": "expose tracker couchdb using a rewriter",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": {
     "url": ""
   },
@@ -23,5 +23,5 @@
     "scripts": {
         "test": "mocha"
     },
-   "main": "lib/rewrite.js"
+   "main": "index.js"
 }
