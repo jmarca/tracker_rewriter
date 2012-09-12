@@ -5,8 +5,7 @@
 var should = require('should')
 
 var async = require('async')
-var _ = require('underscore')
-var request = require('request')
+var _ = require('lodash')
 var superagent = require('superagent')
 var http = require('http')
 
