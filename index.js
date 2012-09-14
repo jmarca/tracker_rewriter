@@ -6,4 +6,4 @@ exports.couchdb_rewrite_service = require('./lib/rewrite_service').couchdb_rewri
 var geoservices = require('./lib/geocouch_rewriter')
 exports.geoservice = geoservices.geoservice
 exports.geoservices = geoservices.geoservices
-
+exports.tracker=require('./lib/tracker_webfiles').tracker

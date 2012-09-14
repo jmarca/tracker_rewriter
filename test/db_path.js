@@ -9,7 +9,7 @@ var _ = require('lodash')
 var superagent = require('superagent')
 var http = require('http')
 
-var db_service = require('../lib/rewrite_service').couchdb_rewrite_service
+var db_service = require('../.').couchdb_rewrite_service
 var express = require('express')
 
 var env = process.env;
@@ -31,8 +31,6 @@ before(
 after(function(done){
     server.close(done)
 })
-
-var qs = require('querystring')
 
 describe('/db detectors',function(){
     describe('/db/wimdetectors',function(){
