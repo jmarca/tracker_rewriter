@@ -15,7 +15,7 @@ var express = require('express')
 var env = process.env;
 var testhost = env.TEST_HOST || '127.0.0.1'
 var testport = env.TEST_PORT || 3000
-
+testport += 1
 
 var app,server
 
