@@ -20,7 +20,7 @@ var app,server
 before(
     function(done){
         app = express()
-              .use(express.logger())
+              //.use(express.logger())
 
         tracker(app)
         server=http
