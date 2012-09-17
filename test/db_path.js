@@ -52,7 +52,7 @@ describe('/db detectors',function(){
                    should.exist(res.body)
                    var c = res.body
                    c.should.have.property('rows')
-                   c.rows.should.have.length(220)
+                   c.rows.should.have.length(231)
                    _.each(c.rows
                          ,function(row){
                               row.should.have.property('id')

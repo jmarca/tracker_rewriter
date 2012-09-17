@@ -139,7 +139,6 @@ describe('/tracker path',function(){
                       })
         })
         it('together in rhythm and sorrow',function(kissme){
-
             async.forEach(_.keys(links)
                          ,function(link,cb){
                               superagent.get(link)
