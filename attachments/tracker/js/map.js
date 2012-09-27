@@ -1,24 +1,29 @@
 var po = org.polymaps;
-var ui_layers = {};
-
-ui_layers.detectors = po.geoJson()
-    .url("/detectors/{Z}/{X}/{Y}.json")
-    .id("detectors")
-    .clip(false)
-    .visible(true)
-    .on("load", detectors_load)
-    .on("load", po.stylist()
-                .attr("stroke", function(d) {
-                    return 'green';
-                })
-       );
+var ui_layers = [];
 
 
-ui_layers.counties = po.geoJson()
-    .url("/counties/{Z}/{X}/{Y}.json")
-    .id("carb_counties_aligned_03")
-    .clip(true)
-    .on("load", county_load);
+
+
+ui_layers.push( po.geoJson()
+                .url("/counties/{Z}/{X}/{Y}.json")
+                .id("carb_counties_aligned_03")
+                .clip(true)
+                .on("load", county_load)
+              );
+
+
+ui_layers.push( po.geoJson()
+                .url("/detectors/{Z}/{X}/{Y}.json")
+                .id("detectors")
+                .clip(false)
+                .visible(true)
+                .on("load", detectors_load)
+                .on("load", po.stylist()
+                    .attr("stroke", function(d) {
+                        return 'green';
+                    })
+                   )
+              );
 
 function county_load(e) {
     for (var i = 0; i < e.features.length; i++) {
