@@ -85,6 +85,20 @@ var detector_view
             // reselect to make sure I have the current set
             rows = blob
                    .selectAll('div.year');
+            var timeagg = ['monthly','daily','hourly']
+            var csvlinks = rows.selectAll('a.datalink')
+                           .data(function(g,d,i){
+                               var urls = timeagg.map(function(agg){
+                                              return [agg,'/data6/freeway/'+agg+'/'+d+'/'+data._id+'.csv']
+                                          })
+                               return urls
+                           })
+
+            csvlinks.enter()
+            .append('a')
+            .classed('datalink')
+            .attr('href',function(d){return d[1]})
+            .text(function(d){return d[0]+' data'})
             return rows;
         }
         function processData(data){
@@ -106,4 +120,3 @@ var detector_view
         return initialize(options);
 
     }
-
