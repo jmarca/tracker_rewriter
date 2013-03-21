@@ -89,14 +89,14 @@ var detector_view
             var csvlinks = rows.selectAll('a.datalink')
                            .data(function(g,d,i){
                                var urls = timeagg.map(function(agg){
-                                              return [agg,'/data6/freeway/'+agg+'/'+d+'/'+data._id+'.csv']
+                                              return [agg,'/data6/freeway/'+agg+'/'+g+'/'+data._id+'.csv']
                                           })
                                return urls
                            })
 
             csvlinks.enter()
+            .append('div')
             .append('a')
-            .classed('datalink')
             .attr('href',function(d){return d[1]})
             .text(function(d){return d[0]+' data'})
             return rows;
