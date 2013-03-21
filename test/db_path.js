@@ -66,11 +66,43 @@ describe('/db detectors',function(){
            })
     })
     describe('/db/vdsdetectors',function(){
-        it('should return a list of vds detectors'
+        it('should return a list of 500 vds detectors'
           ,function(done){
                var query = {startkey:'0'
                            ,endkey:99999999
-                            //,limit:5
+                            ,limit:500
+                           };
+
+               superagent('http://'+ testhost +':'+testport+'/db/vdsdetectors')
+               .query(query)
+               .set('accept','application/json')
+               .set('followRedirect',true)
+               .end(function(err,res){
+                   if(err) return done(err)
+                   res.ok.should.be.true
+                   should.exist(res.body)
+                   var c = res.body
+                   c.should.have.property('rows')
+                   c.rows.should.have.length(500)
+                   //console.log(c.rows.length)
+                   _.each(c.rows
+                         ,function(row){
+                              row.should.have.property('id')
+                              row.id.should.match(/^\d{6,7}/)
+                              row.should.have.property('key')
+                              row.should.have.property('value',null)
+
+                          })
+                       return done()
+               })
+           })
+    })
+    describe('/db/vdsdetectors',function(){
+        it('should return a list of all vds detectors'
+          ,function(done){
+               var query = {startkey:'0'
+                           ,endkey:99999999
+                            //,limit:500
                            };
 
                superagent('http://'+ testhost +':'+testport+'/db/vdsdetectors')
