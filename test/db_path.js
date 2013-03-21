@@ -135,7 +135,7 @@ describe('/db detectors',function(){
 
         superagent
         .get('http://'+ testhost +':'+testport+'/db/highwaydetectors')
-        .send({'startkey':JSON.stringify([12])
+        .query({'startkey':JSON.stringify([12])
               ,'endkey':JSON.stringify([12,"Z"])
               ,'reduce':false})
         .set('Accept', 'application/json')
