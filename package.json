@@ -10,7 +10,7 @@
     "node": ">0.6.0"
   },
   "dependencies": {
-    "request": "",
+      "superagent":"",
       "lodash": "",
       "geom_utils":"git://github.com/jmarca/geom_utils.git"
   },
@@ -18,7 +18,6 @@
         "should":"",
         "jsdom":"",
         "express":"",
-        "superagent":"",
         "async":""
 
     },

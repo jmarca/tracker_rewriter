@@ -445,3 +445,46 @@ thumper(d)
     var ml = "function(doc) {\n  function flatten(array) {\n    var result = [];\n    if (!array) {\n      return result;\n    }\n    var value, index = -1, length = array.length;\n    var push = Array.prototype.push\n    while (++index < length) {\n      value = array[index];\n      if (Array.isArray(value)) {\n        push.apply(result, flatten(value));\n      } else {\n        result.push(value);\n      }\n    }\n    return result;\n  }\n  var re = new RegExp('\\\\d{6,7}');\n  if( re.test(doc._id) ){\n    var year_re = new RegExp('^\\\\d{4}$');\n    var vers=[]; var geom; var keys = (Object.keys(doc)).filter(function(k){return year_re.test(k)});\n    var findprops = function(y){\n      if(doc[y].properties === undefined) return null;\n      doc[y].properties.forEach(function(p){\n        if(p.geojson === undefined || p.vdstype === undefined || p.vdstype !== 'ML' || p.versions === undefined) return null;\n        var versions = p.versions;\n        if(!Array.isArray(versions)) versions = [p.versions]\n        geom ={type:'Point',coordinates:[p.geojson.coordinates[0],p.geojson.coordinates[1]]};\n        vers.push(versions);\n        return null;\n      })\n      return null\n    }\n    if(keys) keys.forEach(findprops);\n    if(geom) emit(geom,flatten(vers));\n    }\n}"
 
    // That seems to work okay
+
+
+    // testing out reducing geocouch views
+
+
+    function(doc) {
+      function flatten(array) {
+        var result = [];
+        if (!array) {
+          return result;
+        }
+        var value, index = -1, length = array.length;
+        var push = Array.prototype.push
+        while (++index < length) {
+          value = array[index];
+          if (Array.isArray(value)) {
+            push.apply(result, flatten(value));
+          } else {
+            result.push(value);
+          }
+        }
+        return result.sort();
+      }
+      var re = new RegExp('\\\\d{6,7}');
+      if( re.test(doc._id) ){
+        var year_re = new RegExp('^\\\\d{4}$');
+        var vers=[]; var geom; var keys = (Object.keys(doc)).filter(function(k){return year_re.test(k)});
+        var findprops = function(y){
+          if(doc[y].properties === undefined) return null;
+          doc[y].properties.forEach(function(p){
+            if(p.geojson === undefined || p.vdstype === undefined || p.vdstype !== 'ML' || p.versions === undefined) return null;
+            var versions = p.versions;
+            if(!Array.isArray(versions)) versions = [p.versions]
+            geom ={type:'Point',coordinates:[p.geojson.coordinates[0],p.geojson.coordinates[1]]};
+            vers.push(versions);
+            return null;
+          })
+          return null
+        }
+        if(keys) keys.forEach(findprops);
+        if(geom) emit(geom,flatten(vers));
+        }
+    }
