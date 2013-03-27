@@ -11,11 +11,15 @@
                                           shows details from the
                                           imputation process">
         <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
         <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" type="text/css" media="all"  href="/css/oocss/all.css" />
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/ui.css">
+        <link rel="stylesheet" href="css/areacolors.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/layout.css">
-        <link href="./css/areacolors.css" rel="stylesheet" type="text/css" />
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 
@@ -25,32 +29,13 @@
   <![endif]-->
 
   <div class="page liquid">
-    <div class='loading'>
-    </div>
     <div class="head">
       <div id="ctmlbanner">
-        <div id="menu">
-          <!-- Link block -->
-          <ul>
-            <li><a href="/calvad/">Home</a></li>
-            <li><a href="http://www.ctmlabs.net/">CTMLabs</a></li>
-          </ul>
-
-          <!-- account block -->
-          <div id="account">
-            <ul>
-              <li id="loginLink">
-              </li>
-              <li id="logoutLink">
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
     <div class="body">
-      <div class="leftCol">
-        <div class="line">
+      <div class="row-fluid">
+        <div class="span2 leftCol">
           <div class='detectors vds'>
             <h2><a href='#'>VDS detectors</a></h2>
             <div class='listing'>
@@ -62,26 +47,33 @@
             </div>
           </div>
         </div>
+        <div class="span10">
+          <div id='map'>
+          </div>
+          <div class="main" id="blob">
+          </div>
+        </div>
       </div>
-      <div id='map'>
-      </div>
-      <div class="main" id="blob">
-      </div>
-    </div>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.1.min.js"><\/script>')</script>
-    <script src="js/plugins.js"></script>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.1.min.js"><\/script>')</script>
+    <script src='js/plugins.js'></script>
+
+    <script language="javascript" type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+      <script src='http://www.ctmlabs.net/ctmlabs/js/common.js'> </script>
+      <script src='//www.ctmlabs.net/js/ctmlabs-banner.js?appname=CTMLabs&amp;redmineproject=CARB&amp;apphelp=.%2fhelp%2fhelp.html&amp;appcontact=.%2fhelp%2fabout.html%23getting-more-information'></script>
+
 
   <script type='text/javascript' src='js/vendor/ui.js'></script>
-  <script type='text/javascript' src='js/async.min.js'></script>
+  <script type='text/javascript' src='js/vendor/async.min.js'></script>
+  <script type='text/javascript' src='js/vendor/lodash.min.js'></script>
 
   <script language='javascript' type='text/javascript' src='/d3/d3.v2.min.js'> </script>
   <script language='javascript' type='text/javascript' src='js/vendor/polymaps.min.js'> </script>
 
-  <script type='text/javascript' src='js/handlebars.js'></script>
-  <script type='text/javascript' src='js/underscore.js'></script>
+  <script type='text/javascript' src='js/vendor/handlebars.js'></script>
   <script type='text/javascript' src='js/util.js'></script>
   <script type='text/javascript' src='js/detector_view.js'></script>
   <script type='text/javascript' src='js/wimview.js'></script>
