@@ -139,6 +139,13 @@ function vds_yearly_images(data){
                 var t = 'Self imputation completed, ';
                 if(d.vdsraw_max_iterations === undefined){
                     t = 'No data stored on self imputation yet'
+                    // pull together some possible explanations
+                    if(data[d].vdsimputed !== 1){
+                        t += ', '+data[d].vdsimputed
+                    }
+                    if(data[d]['27varserr'] !== undefined){
+                        t += ', '+data[d]['27varserr']
+                    }
                 }else{
                     t += d.vdsraw_max_iterations +' out of '+ d.vdsraw_chain_lengths.length +' imputations stopped at max iterations';
                 }
