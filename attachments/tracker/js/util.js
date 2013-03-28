@@ -89,7 +89,7 @@ var util =
 
         function getMoreDocs(settings){
             var defaults = {couch:''
-                           ,lookahead:1000
+                           ,lookahead:200
                            ,vdsservice:'/db/vdsdetectors'
                            ,wimservice:'/db/wimdetectors'
                            };
@@ -181,4 +181,3 @@ var util =
            };
 
 }();
-

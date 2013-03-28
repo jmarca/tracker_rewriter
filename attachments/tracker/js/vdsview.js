@@ -72,7 +72,13 @@ function vds_yearly_images(data){
                      .classed('props',1);
                      props.append('ul')
                      .selectAll('li')
-                     .data(function(d){return ['name','vdstype','freeway','direction','abs_pm','lanes'];})
+                     .data(function(d){return ['name','vdstype','freeway','direction','abs_pm','lanes'
+                                              ,'district'
+                                              ,'latitude_4269'
+                                              ,'longitude_4269'
+                                              ,'cal_pm'
+                                              ,'geojson']})
+
                      .enter()
                      .append('li')
                      .text(function(d){
@@ -82,9 +88,15 @@ function vds_yearly_images(data){
                                       ,'lanes': 'lanes: '
                                       ,'direction':'direction: '
                                       ,'abs_pm':'absolute postmile: '
+                                      ,'geojson':'GeoJSON: '
                                       };
 
-                         var text = keyval[d]+last_prop[d];
+                         var text = keyval[d] || d + ': '
+                         if(d==='geojson') {
+                             text+= JSON.stringify(last_prop[d])
+                         }else{
+                             text+= last_prop[d]
+                         }
                          return text;
                      });
 
@@ -223,5 +235,3 @@ function vds_yearly_images(data){
                              ,props_cb:displayProperties
                              });
     }( );
-
-
