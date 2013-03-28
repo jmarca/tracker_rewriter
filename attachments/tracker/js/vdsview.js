@@ -129,7 +129,9 @@ function vds_yearly_images(data){
             .data(function(d){
                 if(data[d].vdsraw_chain_lengths)
                 return [{vdsraw_chain_lengths : data[d].vdsraw_chain_lengths
-                ,vdsraw_max_iterations : data[d].vdsraw_max_iterations}]
+                        ,vdsraw_max_iterations : data[d].vdsraw_max_iterations
+                        ,vdsimputed:data[d].vdsimputed
+                        ,varserr:data[d]['27varserr']}]
                 return [{}];
             })
             .enter()
@@ -140,11 +142,11 @@ function vds_yearly_images(data){
                 if(d.vdsraw_max_iterations === undefined){
                     t = 'No data stored on self imputation yet'
                     // pull together some possible explanations
-                    if(data[d].vdsimputed !== 1){
-                        t += ', '+data[d].vdsimputed
+                    if(d.vdsimputed !== undefined && d.vdsimputed !== 1){
+                        t += ', '+d.vdsimputed
                     }
-                    if(data[d]['27varserr'] !== undefined){
-                        t += ', '+data[d]['27varserr']
+                    if(d.varserr !== undefined){
+                        t += ', '+d.varserr
                     }
                 }else{
                     t += d.vdsraw_max_iterations +' out of '+ d.vdsraw_chain_lengths.length +' imputations stopped at max iterations';
