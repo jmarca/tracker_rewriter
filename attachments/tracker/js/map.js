@@ -26,9 +26,15 @@ ui_layers.push( po.geoJson()
               );
 
 function county_load(e) {
+    var opacity = 0
+
+    if(e.tile.zoom > 10) opacity =  (e.tile.zoom - 10) / 10
+    if(opacity > 0.6) opacity = 0.6
     for (var i = 0; i < e.features.length; i++) {
         var feature = e.features[i];
         feature.element.setAttribute("class", 'fips'+feature.data.properties.fips );
+        // hack
+        d3.select(feature.element).style("opacity",0.6-opacity)
     }
 }
 
@@ -136,4 +142,3 @@ function detectors_load(e) {
     e.features = keep;
     return null;
 };
-
