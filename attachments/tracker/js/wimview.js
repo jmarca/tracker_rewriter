@@ -65,7 +65,12 @@ var getWIM
                      .classed('props',1);
                      props.append('ul')
                      .selectAll('li')
-                     .data(function(d){return ['loc','wim_type','freeway','lanes'];})
+                     .data(function(d){return ['loc','wim_type','freeway','lanes'
+                                              ,'cal_pm'
+                                              ,'cal_pm_numeric'
+                                              ,'latitude'
+                                              ,'longitude'
+                                              ,'geojson'];})
                      .enter()
                      .append('li')
                      .text(function(d){
@@ -73,9 +78,18 @@ var getWIM
                                       ,'wim_type':'WIM station type: '
                                       ,'freeway':'Freeway: '
                                       ,'lanes': 'lanes: '
+                                      ,'abs_pm':'absolute postmile: '
+                                      ,'geojson':'GeoJSON: '
+                                      ,'direction':'direction: '
                                       };
 
-                         var text = keyval[d]+data.properties['2009-02-25'][d];
+                         var text = keyval[d] || d + ': '
+                         if(d==='geojson') {
+                             text+= JSON.stringify(data.properties['2009-02-25'][d])
+                         }else{
+                             text+= data.properties['2009-02-25'][d]
+                         }
+
                          return text;
                      });
 
@@ -169,4 +183,3 @@ var getWIM
                                  ,props_cb:displayProperties
                                  });
         }();
-

@@ -67,7 +67,7 @@ describe('/ml detectors',function(){
                    return done()
            })
        })
-    it('should return a list of mainline detectors in a bbox'
+    it('should return a list of mainline detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/ml',z,c,r+'.json'].join('/'))
@@ -123,7 +123,7 @@ describe('/hv detectors',function(){
                    return done()
            })
        })
-    it('should return a list of hov detectors in a bbox'
+    it('should return a list of hov detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/hv',z,c,r+'.json'].join('/'))
@@ -179,7 +179,7 @@ describe('/cd detectors',function(){
                    return done()
            })
        })
-    it('should return a list of collector/distributor detectors in a bbox'
+    it('should return a list of collector/distributor detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/cd',z,c,r+'.json'].join('/'))
@@ -235,7 +235,7 @@ describe('/ff detectors',function(){
                    return done()
            })
        })
-    it('should return a list of freeway to freeway detectors in a bbox'
+    it('should return a list of freeway to freeway detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/ff',z,c,r+'.json'].join('/'))
@@ -291,7 +291,7 @@ describe('/fr detectors',function(){
                    return done()
            })
        })
-    it('should return a list of off ramp detectors in a bbox'
+    it('should return a list of off ramp detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/fr',z,c,r+'.json'].join('/'))
@@ -347,7 +347,7 @@ describe('/or detectors',function(){
                    return done()
            })
        })
-    it('should return a list of onramp detectors in a bbox'
+    it('should return a list of onramp detectors in a bbox via zoom,column,row'
       ,function(done){
            superagent
            .get('http://'+ testhost +':'+testport+['/or',z,c,r+'.json'].join('/'))

@@ -2,9 +2,9 @@
 
 var getVDS
       = function(){
-        var year_re = /_(\d{4})_/;
-        var vds_pre_re=/\d{4}_\d{3}\.png/;
-        var vds_post_re = /imputed_trucks_(bylane)?.*0*(\d+).png/;
+            var year_re = /_(\d{4})_/;
+            var vds_pre_re=/\d{4}_\d{3}\.png/;
+            var vds_post_re = /imputed_trucks_(bylane)?.*0*(\d+).png/;
 
 function vds_yearly_images(data){
 
@@ -51,44 +51,56 @@ function vds_yearly_images(data){
 
 
             var  displayProperties = function(elem,data){
-                     // everybody gets properties dump
-                     //
-                     //
-                     // assign data to element
-                     elem.selectAll('div.props').remove();
-                     var yr_re = /\d{4}/;
-                     var last_year = _.chain(data)
-                                     .keys()
-                                     .filter(function(k){
-                                         return yr_re.test(k);
-                                     })
-                                     .sort()
-                                     .last()
-                                     .value();
-                     var last_prop = _.last(data[last_year].properties)
-                     var props = elem
-                                 .append('div');
-                     props
-                     .classed('props',1);
-                     props.append('ul')
-                     .selectAll('li')
-                     .data(function(d){return ['name','vdstype','freeway','direction','abs_pm','lanes'];})
-                     .enter()
-                     .append('li')
-                     .text(function(d){
-                         var keyval = {'name':'Site name: '
-                                      ,'vdstype':'Detector type: '
-                                      ,'freeway':'Freeway: '
-                                      ,'lanes': 'lanes: '
-                                      ,'direction':'direction: '
-                                      ,'abs_pm':'absolute postmile: '
-                                      };
-
-                         var text = keyval[d]+last_prop[d];
-                         return text;
-                     });
-
-                 };
+                // everybody gets properties dump
+                //
+                //
+                // assign data to element
+                elem.selectAll('div.props').remove();
+                var yr_re = /\d{4}/;
+                var pyear = _.chain(data)
+                            .keys() // have years plus others?
+                            .filter(function(k){
+                                // keep only if is a year and has properties
+                                var keep = yr_re.test(k)
+                                        && data[k].properties !== undefined
+                                return keep
+                            })
+                            .sort() // force the order
+                            .last() // keep the last year with a property
+                            .value();
+                var last_prop = _.last(data[pyear].properties)
+                var props = elem
+                            .append('div');
+                props
+                .classed('props',1);
+                props.append('ul')
+                .selectAll('li')
+                .data(function(d){return ['name','vdstype','freeway','direction','abs_pm','lanes'
+                                         ,'district'
+                                         ,'latitude_4269'
+                                         ,'longitude_4269'
+                                         ,'cal_pm'
+                                         ,'geojson']})
+                .enter()
+                .append('li')
+                .text(function(d){
+                    var keyval = {'name':'Site name: '
+                                 ,'vdstype':'Detector type: '
+                                 ,'freeway':'Freeway: '
+                                 ,'lanes': 'lanes: '
+                                 ,'direction':'direction: '
+                                 ,'abs_pm':'absolute postmile: '
+                                 ,'geojson':'GeoJSON: '
+                                 };
+                    var text = keyval[d] || d + ': '
+                    if(d==='geojson') {
+                        text+= JSON.stringify(last_prop[d])
+                    }else{
+                        text+= last_prop[d]
+                    }
+                    return text;
+                });
+            };
 
 
         var displayData = function(params) {
@@ -117,7 +129,9 @@ function vds_yearly_images(data){
             .data(function(d){
                 if(data[d].vdsraw_chain_lengths)
                 return [{vdsraw_chain_lengths : data[d].vdsraw_chain_lengths
-                ,vdsraw_max_iterations : data[d].vdsraw_max_iterations}]
+                        ,vdsraw_max_iterations : data[d].vdsraw_max_iterations
+                        ,vdsimputed:data[d].vdsimputed
+                        ,varserr:data[d]['27varserr']}]
                 return [{}];
             })
             .enter()
@@ -127,6 +141,13 @@ function vds_yearly_images(data){
                 var t = 'Self imputation completed, ';
                 if(d.vdsraw_max_iterations === undefined){
                     t = 'No data stored on self imputation yet'
+                    // pull together some possible explanations
+                    if(d.vdsimputed !== undefined && d.vdsimputed !== 1){
+                        t += ', '+d.vdsimputed
+                    }
+                    if(d.varserr !== undefined){
+                        t += ', '+d.varserr
+                    }
                 }else{
                     t += d.vdsraw_max_iterations +' out of '+ d.vdsraw_chain_lengths.length +' imputations stopped at max iterations';
                 }
@@ -223,5 +244,3 @@ function vds_yearly_images(data){
                              ,props_cb:displayProperties
                              });
     }( );
-
-

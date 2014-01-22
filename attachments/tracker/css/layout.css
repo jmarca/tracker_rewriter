@@ -61,6 +61,15 @@ svg image {
   vector-effect: non-scaling-stroke;
 }
 
+
+#hpmslinks {
+  fill: none;
+  stroke: #000000;
+  stroke-opacity: 0.8;
+  shape-rendering: auto;
+  vector-effect: non-scaling-stroke;
+}
+
 circle.wim{
     fill: #8833ee;
 }
