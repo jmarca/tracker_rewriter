@@ -24,24 +24,16 @@ var clickhandler = {'wim':getWIM.get
 
 function enlargeimage(d) {
 
-    var taller = jQuery(window).height()*0.95;
+    // var taller = jQuery(window).height()*0.95;
 
-    var _d = ui.dialog(''
-             , jQuery('<img src='+d+' alt="image blowup" />')
-             )
-      .closable()
-      .overlay()
-      .effect('scale')
-      .show()
-    ;
-    _d.el.css({ height: taller + 'px' });
+    // var _d = ui.dialog(''
+    //          , jQuery('<img src='+d+' alt="image blowup" />')
+    //          )
+    //   .closable()
+    //   .overlay()
+    //   .effect('scale')
+    //   .show()
+    // ;
+    // _d.el.css({ height: taller + 'px' });
 
 }
-
-jQuery('#blob').ready(function(){
-
-    var site = 'wim.10.S';
-    getWIM.get(site);
-
-})
-
