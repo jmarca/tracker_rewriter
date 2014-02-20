@@ -10,19 +10,19 @@
     "node": ">0.6.0"
   },
   "dependencies": {
-      "superagent":"",
-      "lodash": "",
-      "geom_utils":"git://github.com/jmarca/geom_utils.git"
+    "superagent": "",
+    "lodash": "",
+    "geom_utils": "git://github.com/jmarca/geom_utils.git",
+    "jade": "~1.1.5"
   },
-    "devDependencies": {
-        "should":"",
-        "jsdom":"",
-        "express":"",
-        "async":""
-
-    },
-    "scripts": {
-        "test": "mocha"
-    },
-   "main": "index.js"
+  "devDependencies": {
+    "should": "",
+    "jsdom": "",
+    "express": "",
+    "async": ""
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "main": "index.js"
 }
