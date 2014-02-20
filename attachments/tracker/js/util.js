@@ -107,7 +107,7 @@ var util =
                 function(option){
                     var url = vdsurl;
                     var query = {limit:settings.lookahead
-                                ,startkey:oldlast
+                                ,startkey:+oldlast
                                 ,endkey:99999999
                                 };
 
@@ -154,7 +154,7 @@ var util =
                             }
                         }(elemclass,lasthandler);
                     function fetch(){
-                        query.startkey = option == 'wim' ? wimoldlast : oldlast;
+                        query.startkey = option == 'wim' ? wimoldlast : +oldlast;
                         jQuery.ajax({'url': url// + encodeOptions(query)
                                     ,'data':query
                                     ,'dataType': 'json'
