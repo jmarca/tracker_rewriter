@@ -10,6 +10,7 @@ var path = require('path')
 var rootdir = path.normalize(__dirname)
 
 var tracker = require('./.').tracker
+var db_service = require('./.').couchdb_rewrite_service
 
 var express = require('express')
 var app = express()
@@ -17,7 +18,7 @@ app
     .use(express.logger('dev'))
    .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
 tracker(app)
-//app.use(express.static(__dirname+"/attachments/tracker"))
+db_service(app)
 
 
 // listen on a port, and then the action begins!

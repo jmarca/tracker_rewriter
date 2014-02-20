@@ -1,9 +1,9 @@
 doctype html
 html(lang="en")
-  <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-  <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-  <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-  <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  | <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+  | <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+  | <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+  | <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   head
     meta( charset="utf-8" )
     meta( http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
@@ -12,7 +12,7 @@ html(lang="en")
       content="This part of the website shows details from the imputation process")
     meta( name="viewport", content="width=device-width")
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    | <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     link( rel="stylesheet", href="css/normalize.css")
     link( rel="stylesheet", href="css/main.css")
@@ -23,7 +23,7 @@ html(lang="en")
     script( src="js/vendor/modernizr-2.6.2.min.js")
 
   body
-    <!--[if lt IE 7]>
+    | <!--[if lt IE 7]>
 
     p.chromeframe  You are using an outdated browser.
       a( href="http://browsehappy.com/") Upgrade your browser today
@@ -31,7 +31,7 @@ html(lang="en")
       a( href="http://www.google.com/chromeframe/?redirect=true") install Google Chrome Frame
       | to better experience this site.
 
-    <![endif]-->
+    | <![endif]-->
 
     div.page.liquid
       div.head
@@ -40,13 +40,13 @@ html(lang="en")
         div.row-fluid
           div.span2.leftCol
             div.detectors.vds
-              a(href='#') VDS detectors
-
+              h2
+                a(href='#') VDS detectors
               div.listing
 
             div.detectors.wim
-              a(href='#') WIM detectors
-
+              h2
+                a(href='#') WIM detectors
               div.listing
 
           div.span10
@@ -66,22 +66,23 @@ html(lang="en")
     script( src='//www.ctmlabs.net/js/ctmlabs-banner.js?appname=CTMLabs&amp;redmineproject=CARB&amp;apphelp=.%2fhelp%2fhelp.html&amp;appcontact=.%2fhelp%2fabout.html%23getting-more-information')
 
 
-    script( type='text/javascript' src='js/vendor/ui.js')></script>
-    script( type='text/javascript' src='js/vendor/async.min.js')></script>
-    script( type='text/javascript' src='js/vendor/lodash.min.js')></script>
+    script( type='text/javascript' src='js/vendor/ui.js')
+    script( type='text/javascript' src='js/vendor/async.min.js')
+    script( type='text/javascript' src='js/vendor/lodash.min.js')
 
-    script(type='text/javascript' language='javascript' src='/d3/d3.v2.min.js')> </script>
-    script(type='text/javascript' language='javascript' src='js/vendor/polymaps.min.js')> </script>
+    script( src="http://d3js.org/d3.v3.min.js" charset="utf-8")
 
-    script(type='text/javascript' src='js/vendor/handlebars.js')></script>
-    script(type='text/javascript' src='js/util.js')></script>
-    script(type='text/javascript' src='js/detector_view.js')></script>
-    script(type='text/javascript' src='js/wimview.js')></script>
-    script(type='text/javascript' src='js/vdsview.js')></script>
-    script(type='text/javascript' src='js/dataview.js')></script>
-    script(type='text/javascript' src='js/map.js')></script>
+    script(type='text/javascript' language='javascript' src='js/vendor/polymaps.min.js')
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    script(type='text/javascript' src='js/vendor/handlebars.js')
+    script(type='text/javascript' src='js/util.js')
+    script(type='text/javascript' src='js/detector_view.js')
+    script(type='text/javascript' src='js/wimview.js')
+    script(type='text/javascript' src='js/vdsview.js')
+    script(type='text/javascript' src='js/dataview.js')
+    script(type='text/javascript' src='js/map.js')
+
+    | <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     script.
         var _gaq=[['_setAccount','UA-30207196-1']
         ,['_trackPageview']
@@ -89,3 +90,14 @@ html(lang="en")
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
+
+    script.
+      jQuery('#blob').ready(function(){
+        var site = '#{detector}';
+        if(/wim/.test(site)){
+          getWIM.get(site);
+        }else{
+          getVDS.get(site);
+        }
+        return null
+      })
