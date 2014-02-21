@@ -13,6 +13,7 @@
     "superagent": "",
     "lodash": "",
     "geom_utils": "git://github.com/jmarca/geom_utils.git",
+    "couchdb_toQuery": "git://github.com/jmarca/couchdb_toQuery.git",
     "jade": "~1.1.5"
   },
   "devDependencies": {
