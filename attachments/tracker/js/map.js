@@ -76,7 +76,7 @@ jQuery(document).ready(function(){
             .container(svg[0][0])
             .center({lon:-117.8809,lat:33.7209})
             .tileSize({x: 128, y: 128})
-            .zoom(10)
+            .zoom(14)
             .zoomRange([6, 18])
             .add(po.interact());
 
