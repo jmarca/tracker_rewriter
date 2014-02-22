@@ -20,7 +20,6 @@ app
 tracker(app)
 db_service(app)
 
-
 // listen on a port, and then the action begins!
 app.listen(this_service_port,'0.0.0.0', function(e){
     if(e){

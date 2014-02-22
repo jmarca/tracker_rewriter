@@ -95,9 +95,9 @@ html(lang="en")
       jQuery('#blob').ready(function(){
         var site = '#{detector}';
         if(/wim/.test(site)){
-          getWIM.get(site);
+          getWIM.get(site,util.movemap);
         }else{
-          getVDS.get(site);
+          getVDS.get(site,movemap);
         }
         return null
       })

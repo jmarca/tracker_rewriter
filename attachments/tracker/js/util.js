@@ -178,6 +178,7 @@ var util =
            , hideLoader: hideLoader
            , loaderShowing: loaderShowing
            , getMore: doit
+           , movemap: movemap
            };
 
 }();
