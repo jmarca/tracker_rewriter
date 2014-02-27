@@ -65,7 +65,7 @@ var getWIM
                      .classed('props',1);
                      props.append('ul')
                      .selectAll('li')
-                     .data(function(d){return ['loc','wim_type','freeway','abspm','lanes'
+                     .data(function(d){return ['loc','wim_type','freeway','abs_pm','lanes'
                                               ,'cal_pm'
                                               ,'cal_pm_numeric'
                                               ,'latitude'
@@ -78,7 +78,7 @@ var getWIM
                                       ,'wim_type':'WIM station type: '
                                       ,'freeway':'Freeway: '
                                       ,'lanes': 'lanes: '
-                                      ,'abspm':'absolute postmile: '
+                                      ,'abs_pm':'absolute postmile: '
                                       ,'geojson':'GeoJSON: '
                                       ,'direction':'direction: '
                                       };
